@@ -16,6 +16,7 @@
 
 .sizeButtons {
   position: relative;
+  margin-right: 50px;
 }
 
 .sizeButtons input {
@@ -43,4 +44,78 @@
 
 .sizeButtons input[type="radio"]:checked + label {
     background-color:#bbb;
+}
+
+
+
+.trialButtons {
+  position: relative;
+  margin-left: 50px;
+}
+
+.trialButtons input {
+  width: 65px;
+  height: 25px;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 100;
+  /*left: 0px;*/
+}
+
+.trialButtons label {
+  cursor: pointer;
+  display: inline-block;
+  margin: 0px;
+  width: 65px;
+  padding: 0px 6px;
+  color: #777;
+  line-height: 20px;
+  font-size: 13px;
+  text-shadow: 1px 1px 1px #fff;
+  border: 1px solid #fff;
+}
+
+.trialButtons input[type="radio"]:checked + label {
+    background-color:#bbb;
+}
+
+
+
+.caseButtons {
+  position: relative;
+  margin-left: 50px;
+}
+
+.caseButtons input {
+  width: 65px;
+  height: 25px;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 100;
+  /*left: 0px;*/
+}
+
+.caseButtons label {
+  cursor: pointer;
+  display: inline-block;
+  margin: 0px;
+  width: 65px;
+  padding: 0px 6px;
+  color: #777;
+  line-height: 20px;
+  font-size: 13px;
+  text-shadow: 1px 1px 1px #fff;
+  border: 1px solid #fff;
+}
+
+.caseButtons input[type="radio"]:checked + label {
+    background-color:#bbb;
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  margin: 50px;
 }
