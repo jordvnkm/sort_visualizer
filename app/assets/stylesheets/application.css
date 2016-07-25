@@ -13,3 +13,34 @@
  *= require_tree .
  *= require_self
  */
+
+.sizeButtons {
+  position: relative;
+}
+
+.sizeButtons input {
+  width: 65px;
+  height: 25px;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 100;
+  /*left: 0px;*/
+}
+
+.sizeButtons label {
+  cursor: pointer;
+  display: inline-block;
+  margin: 0px;
+  width: 65px;
+  padding: 0px 6px;
+  color: #777;
+  line-height: 20px;
+  font-size: 13px;
+  text-shadow: 1px 1px 1px #fff;
+  border: 1px solid #fff;
+}
+
+.sizeButtons input[type="radio"]:checked + label {
+    background-color:#bbb;
+}
