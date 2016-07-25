@@ -8,7 +8,7 @@ const BubbleSort = require("../algorithms/bubble_sort");
 
 const App = React.createClass({
   getInitialState: function(){
-    return {arraySize: 10}
+    return {arraySize: 10, trialSize: 10, situation: "average"}
   },
 
   componentDidMount: function(){
@@ -65,6 +65,14 @@ const App = React.createClass({
 
   getSortTimes: function(){
     let array;
+    let merge;
+    let insert;
+    let heap;
+    let selection;
+    let quick;
+    let bubble;
+    let sortTimes = [];
+
     if (this.state.arraySize == 10){
       array = this.n10.slice();
     }
@@ -78,13 +86,14 @@ const App = React.createClass({
       array = this.n100000.slice();
     }
 
-    let sortTimes = [];
-    let merge = MergeSort.sortTime(array.slice());
-    let insert = InsertionSort.sortTime(array.slice());
-    let heap = HeapSort.sortTime(array.slice());
-    let selection = SelectionSort.sortTime(array.slice());
-    let quick = QuickSort.sortTime(array.slice());
-    let bubble = BubbleSort.sortTime(array.slice());
+
+    merge = MergeSort.sortTime(array.slice(), this.state.trialSize, this.state.situation);
+    insert = InsertionSort.sortTime(array.slice(), this.state.trialSize, this.state.situation);
+    heap = HeapSort.sortTime(array.slice(), this.state.trialSize, this.state.situation);
+    selection = SelectionSort.sortTime(array.slice(), this.state.trialSize, this.state.situation);
+    quick = QuickSort.sortTime(array.slice(), this.state.trialSize, this.state.situation);
+    bubble = BubbleSort.sortTime(array.slice(), this.state.trialSize, this.state.situation);
+
 
     sortTimes.push(merge);
     sortTimes.push(insert);
@@ -120,6 +129,16 @@ const App = React.createClass({
     this.setState({arraySize: event.target.value});
   },
 
+  onTrialChange: function(event){
+    console.log(event.target.value);
+    this.setState({trialSize: event.target.value});
+  },
+
+  onSituationChange: function(event){
+    console.log(event.target.value);
+    this.setState({situation: event.target.value});
+  },
+
   sizeButtons: function(){
     return (
       <div className="sizeButtons">
@@ -140,7 +159,36 @@ const App = React.createClass({
   },
 
   trialButtons: function(){
+    return (
+      <div className="trialButtons">
+        <h4>Trial Size</h4>
+        <input id="trial1" type='radio' checked={this.state.trialSize == 10} name='trialSize' onChange={this.onTrialChange} value={10} />
+        <label htmlFor="trial1">10</label>
 
+        <input id="trial2" type='radio' checked={this.state.trialSize == 100} name='trialSize' onChange={this.onTrialChange} value={100} />
+        <label htmlFor="trial2">100</label>
+
+        <input id="trial3" type='radio' checked={this.state.trialSize == 1000} name='trialSize' onChange={this.onTrialChange} value={1000}/>
+        <label htmlFor="trial3">1000</label>
+      </div>
+    )
+  },
+
+
+  caseButtons: function(){
+    return (
+      <div className="caseButtons">
+        <h4>Time</h4>
+        <input id="case1" type='radio' checked={this.state.situation == "best"} name='situation' onChange={this.onSituationChange} value={"best"} />
+        <label htmlFor="case1">Best</label>
+
+        <input id="case2" type='radio' checked={this.state.situation == "average"} name='situation' onChange={this.onSituationChange} value={"average"} />
+        <label htmlFor="case2">Average</label>
+
+        <input id="case3" type='radio' checked={this.state.situation == "worst"} name='situation' onChange={this.onSituationChange} value={"worst"}/>
+        <label htmlFor="case3">Worst</label>
+      </div>
+    )
   },
 
   options: function(){
@@ -148,6 +196,7 @@ const App = React.createClass({
       <div className="options">
         {this.sizeButtons()}
         {this.trialButtons()}
+        {this.caseButtons()}
       </div>
     )
   },
