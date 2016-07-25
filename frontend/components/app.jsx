@@ -72,7 +72,6 @@ const App = React.createClass({
     let insert = InsertionSort.sortTime(array.slice());
     let heap = HeapSort.sortTime(array.slice());
     let selection = SelectionSort.sortTime(array.slice());
-    console.log(array);
     sortTimes.push(merge);
     sortTimes.push(insert);
     sortTimes.push(heap);
