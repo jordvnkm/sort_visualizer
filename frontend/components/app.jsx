@@ -3,6 +3,8 @@ const MergeSort = require("../algorithms/merge_sort");
 const InsertionSort = require("../algorithms/insertion_sort");
 const HeapSort = require("../algorithms/heap_sort");
 const SelectionSort = require("../algorithms/selection_sort");
+const QuickSort = require("../algorithms/quick_sort");
+const BubbleSort = require("../algorithms/bubble_sort");
 
 const App = React.createClass({
   getInitialState: function(){
@@ -50,6 +52,15 @@ const App = React.createClass({
     $('#insertionSort').css("height", `${percentages[1]}%`);
     $('#heapSort').css("height", `${percentages[2]}%`);
     $('#selectionSort').css("height", `${percentages[3]}%`);
+    $('#quickSort').css("height", `${percentages[4]}%`);
+    $('#bubbleSort').css("height", `${percentages[5]}%`);
+
+    $('#mergeSort').css("bottom", "0");
+    $('#insertionSort').css("bottom", "0");
+    $('#heapSort').css("bottom", "0");
+    $('#selectionSort').css("bottom", "0");
+    $('#quickSort').css("bottom", "0");
+    $('#bubbleSort').css("bottom", "0");
   },
 
   getSortTimes: function(){
@@ -72,10 +83,15 @@ const App = React.createClass({
     let insert = InsertionSort.sortTime(array.slice());
     let heap = HeapSort.sortTime(array.slice());
     let selection = SelectionSort.sortTime(array.slice());
+    let quick = QuickSort.sortTime(array.slice());
+    let bubble = BubbleSort.sortTime(array.slice());
+
     sortTimes.push(merge);
     sortTimes.push(insert);
     sortTimes.push(heap);
     sortTimes.push(selection);
+    sortTimes.push(quick);
+    sortTimes.push(bubble)
     return sortTimes;
   },
 
@@ -177,6 +193,26 @@ const App = React.createClass({
               <div className="bar-container">
                 <div className="bar-background"></div>
                 <div id="selectionSort" className="bar-inner"></div>
+                <div className="bar-foreground"></div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <span>Quick sort</span>
+            <div className="bar-wrapper">
+              <div className="bar-container">
+                <div className="bar-background"></div>
+                <div id="quickSort" className="bar-inner"></div>
+                <div className="bar-foreground"></div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <span>Bubble sort</span>
+            <div className="bar-wrapper">
+              <div className="bar-container">
+                <div className="bar-background"></div>
+                <div id="bubbleSort" className="bar-inner"></div>
                 <div className="bar-foreground"></div>
               </div>
             </div>
