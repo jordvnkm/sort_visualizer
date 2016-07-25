@@ -2,6 +2,7 @@ const React = require("react");
 const MergeSort = require("../algorithms/merge_sort");
 const InsertionSort = require("../algorithms/insertion_sort");
 const HeapSort = require("../algorithms/heap_sort");
+const SelectionSort = require("../algorithms/selection_sort");
 
 const App = React.createClass({
   getInitialState: function(){
@@ -48,6 +49,7 @@ const App = React.createClass({
     $('#mergeSort').css("height", `${percentages[0]}%`);
     $('#insertionSort').css("height", `${percentages[1]}%`);
     $('#heapSort').css("height", `${percentages[2]}%`);
+    $('#selectionSort').css("height", `${percentages[3]}%`);
   },
 
   getSortTimes: function(){
@@ -66,13 +68,15 @@ const App = React.createClass({
     }
 
     let sortTimes = [];
-    let merge = MergeSort.sortTime(array);
-    let insert = InsertionSort.sortTime(array);
+    let merge = MergeSort.sortTime(array.slice());
+    let insert = InsertionSort.sortTime(array.slice());
     let heap = HeapSort.sortTime(array.slice());
-
+    let selection = SelectionSort.sortTime(array.slice());
+    console.log(array);
     sortTimes.push(merge);
     sortTimes.push(insert);
     sortTimes.push(heap);
+    sortTimes.push(selection);
     return sortTimes;
   },
 
@@ -164,6 +168,16 @@ const App = React.createClass({
               <div className="bar-container">
                 <div className="bar-background"></div>
                 <div id="heapSort" className="bar-inner"></div>
+                <div className="bar-foreground"></div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <span>Selection sort</span>
+            <div className="bar-wrapper">
+              <div className="bar-container">
+                <div className="bar-background"></div>
+                <div id="selectionSort" className="bar-inner"></div>
                 <div className="bar-foreground"></div>
               </div>
             </div>

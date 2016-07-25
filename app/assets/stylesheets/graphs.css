@@ -331,6 +331,7 @@
 .graph-container > li:nth-child(1) .bar-inner { height: 0%; bottom: 0; }
 .graph-container > li:nth-child(2) .bar-inner { height: 0%; bottom: 0; }
 .graph-container > li:nth-child(3) .bar-inner { height: 0%; bottom: 0; }
+.graph-container > li:nth-child(4) .bar-inner { height: 0%; bottom: 0; }
 
 
 #marker50 {
