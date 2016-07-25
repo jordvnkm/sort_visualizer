@@ -1,0 +1,363 @@
+/* Bar wrapper - hides the inner bar when it goes below the bar, required */
+.bar-wrapper {
+  overflow: hidden;
+}
+/* Bar container - this guy is a real parent of a bar's parts - they all are positioned relative to him */
+.bar-container {
+  position: relative;
+  margin-top: 2.5em; /* should be at least equal to the top offset of background casing */
+                     /* because back casing is positioned higher than actual bar */
+  width: 12.5em; /* required, we have to define the width of a bar */
+}
+/* right bottom patch - make sure inner bar's right bottom corner is "cut" when it slides down */
+.bar-container:before {
+  content: "";
+  position: absolute;
+  z-index: 3; /* to be above .bar-inner */
+
+  bottom: 0;
+  right: 0;
+
+  /* Use bottom border to shape triangle */
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 2.5em 2.5em;
+  border-color: transparent transparent rgba(183,183,183,1);
+}
+
+
+
+
+/* Back panel */
+.bar-background {
+  width: 10em;
+  height: 100%;
+  position: absolute;
+  top: -2.5em;
+  left: 2.5em;
+  z-index: 1; /* just for reference */
+}
+
+.bar-background:before,
+.bar-background:after {
+  content: "";
+  position: absolute;
+}
+
+/* Bottom panel */
+.bar-background:before {
+  bottom: -2.5em;
+  right: 1.25em;
+  width: 10em;
+  height: 2.5em;
+  transform: skew(-45deg);
+}
+
+/* Left back panel */
+.bar-background:after {
+  top: 1.25em;
+  right: 10em;
+  width: 2.5em;
+  height: 100%;
+
+  /* skew only the Y-axis */
+  transform: skew(0deg, -45deg);
+}
+
+
+/* Front panel */
+.bar-foreground {
+    z-index: 3; /* be above .bar-background and .bar-inner */
+}
+.bar-foreground,
+.bar-inner {
+  position: absolute;
+  width: 10em;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.bar-foreground:before,
+.bar-foreground:after,
+.bar-inner:before,
+.bar-inner:after {
+  content: "";
+  position: absolute;
+}
+
+/* Right front panel */
+.bar-foreground:before,
+.bar-inner:before {
+  top: -1.25em;
+  right: -2.5em;
+  width: 2.5em;
+  height: 100%;
+  background-color: rgba(160, 160, 160, .27);
+
+  transform: skew(0deg, -45deg);
+}
+
+/* Top front panel */
+.bar-foreground:after,
+.bar-inner:after {
+  top: -2.5em;
+  right: -1.25em;
+  width: 100%;
+  height: 2.5em;
+  background-color: rgba(160, 160, 160, .2);
+
+  transform: skew(-45deg);
+}
+
+
+
+.bar-inner {
+  z-index: 2; /* to be above .bar-background */
+  top: auto; /* reset position top */
+  background-color: rgba(5, 62, 123, .6);
+  height: 0;
+  bottom: -2.5em;
+  color: transparent; /* hide text values */
+
+  transition: height 1s linear, bottom 1s linear;
+}
+
+/* Right panel */
+.bar-inner:before {
+  background-color: rgba(5, 62, 123, .6);
+}
+
+/* Top panel */
+.bar-inner:after {
+  background-color: rgba(47, 83, 122, .7);
+}
+
+
+
+
+/** Graph Holder container **/
+.graph-container {
+  position: relative; /* required Y axis stuff, Graph Holder's left and bottom sides to be positions properly */
+  display: inline-block; /* display: table may also work.. */
+  padding: 0; /* let the bars position themselves */
+  list-style: none; /* we don't want to see any default <ul> markers */
+
+  /* Graph Holder's Background */
+  background-image: linear-gradient(left , rgba(255, 255, 255, .3) 100%, transparent 100%);
+  background-repeat: no-repeat;
+  background-position: 0 -2.5em;
+}
+
+
+/* Graph Holder bottom side */
+.graph-container:before {
+  position: absolute;
+  content: "";
+
+  bottom: 0;
+  left: -1.25em; /* skew pushes it left, so we move it a bit in opposite direction */
+
+  width: 100%; /* make sure it is as wide as the whole graph */
+
+  height: 2.5em;
+  background-color: rgba(183, 183, 183, 1);
+
+  /* Make it look as if in perspective */
+  transform: skew(-45deg);
+}
+
+
+/* Graph Holder left side*/
+.graph-container:after {
+  position: absolute;
+  content: "";
+
+  top: 1.25em; /* skew pushes it up so we move it down a bit */
+  left: -2.5em;
+
+  width: 2.5em;
+  background-color: rgba(28, 29, 30, .4);
+
+  /* Make it look as if in perspective */
+  transform: skew(0deg, -45deg);
+}
+
+
+/* Bars and X-axis labels holder */
+.graph-container > li {
+  float: left; /* Make sure bars are aligned one next to another*/
+  position: relative; /* Make sure X-axis labels are positioned relatively to this element */
+}
+/* A small hack to make Graph Holder's background side be wide enough
+   ...because our bottom side is skewed and pushed to the right, we have to compensate it in the graph holder's background */
+.graph-container > li:nth-last-child(2) {
+  margin-right: 2.5em;
+}
+/* X-axis labels */
+.graph-container > li > span {
+  position: absolute;
+  left: 0;
+  bottom: -2em;
+  width: 80%; /* play with this one if you change perspective depth */
+  text-align: center;
+
+  font-size: 1.5em;
+  color: black;
+}
+
+
+
+/* Markers container */
+.graph-container > li:last-child {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+/* Y-axis Markers list */
+.graph-marker-container > li {
+  position: absolute;
+  left: -2.5em;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 2.5em;
+  list-style: none;
+}
+
+/* Y-axis lines general styles */
+.graph-marker-container > li:before,
+.graph-marker-container > li:after {
+  content: "";
+  position: absolute;
+  border-style: none none dotted;
+  border-color: rgba(100, 100, 100, .15);
+  border-width: 0 0 .15em;
+  background: rgba(133, 133, 133, .15);
+}
+
+/* Y-axis Side line */
+.graph-marker-container > li:before {
+  width: 3.55em;
+  height: 0;
+  bottom: -1.22em;
+  left: -.55em;
+  z-index: 2; /* be above .graph-container:after */
+  transform: rotate(-45deg);
+}
+
+/* Y-axis Background line */
+.graph-marker-container li:after {
+  width: 100%;
+  bottom: 0;
+  left: 2.5em;
+}
+
+/* Y-axis text Label */
+.graph-marker-container span {
+  color: black;
+  position: absolute;
+
+  top: 1em;
+  left: -3.5em; /* just to push it away from the graph.. */
+  width: 3.5em; /* give it absolute value of left offset */
+
+  font-size: 1.5em;
+}
+
+
+
+/****************
+ * SIZES        *
+ ****************/
+ /* Size of the Graph */
+.graph-container,
+.bar-container {
+  font-size: 8px;
+}
+/* Height of Bars */
+.bar-container,
+.graph-container:after,
+.graph-container > li:last-child {
+  height: 40em;
+}
+
+/****************
+ * SPACING      *
+ ****************/
+/* spacing between bars */
+.graph-container > li .bar-container {
+  margin-right: 1.5em;
+}
+/* spacing before first bar */
+.graph-container > li:first-child {
+  margin-left: 1.5em;
+}
+/* spacing after last bar */
+.graph-container > li:nth-last-child(2) .bar-container {
+  margin-right: 1.5em;
+}
+
+/****************
+ *    Colors    *
+ ****************/
+/* Bar's Back side */
+.bar-background {
+  background-color: rgba(160, 160, 160, .1);
+}
+/* Bar's Bottom side */
+.bar-background:before {
+  background-color: rgba(160, 160, 160, .2);
+}
+/* Bar's Left Back side */
+.bar-background:after {
+  background-color: rgba(160, 160, 160, .05);
+}
+/* Bar's Front side */
+.bar-foreground {
+  background-color: rgba(160, 160, 160, .1);
+}
+/* Bar's inner block */
+.bar-inner,
+.bar-inner:before { background-color: rgba(5, 62, 123, .6); }
+.bar-inner:after { background-color: rgba(47, 83, 122, .7); }
+
+/*************************************
+ *   Bars Fill                       *
+ * Just an example of filling 3 bars *
+ *************************************/
+/*.graph-container > li:nth-child(1) .bar-inner {  bottom: 0; }
+.graph-container > li:nth-child(2) .bar-inner { bottom: 0; }
+.graph-container > li:nth-child(3) .bar-inner {   bottom: 0; }
+.graph-container > li:nth-child(4) .bar-inner {  bottom: 0; }*/
+
+
+#marker50 {
+  bottom: 50%;
+}
+
+#marker25 {
+  bottom: 25%;
+}
+
+#marker75 {
+  bottom: 75%;
+}
+
+#marker100 {
+  bottom: 100%;
+}
+
+
+#content {
+  text-align: center;
+  width: 100%;
+  background: rgba(0,0,0,0.03);
+  padding: 30px 50px 50px 50px;
+  margin: 0 auto 30px auto;
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
+}
+/*.graph-container > li:nth-child(3) .bar-inner { height: 75%; bottom: 0; }*/
