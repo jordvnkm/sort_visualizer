@@ -21107,10 +21107,11 @@
 	  displayName: "App",
 
 	  getInitialState: function getInitialState() {
-	    return { arraySize: 10, trialSize: 10, situation: "average" };
+	    return { arraySize: 10, trialSize: 1, situation: "best" };
 	  },
 
 	  componentDidMount: function componentDidMount() {
+	    $('#timeWarning').css("visibility", "hidden");
 	    this.reverse = true;
 	    this.n10 = this.createArray(10);
 	    this.n100 = this.createArray(100);
@@ -21138,27 +21139,55 @@
 	  },
 
 	  runSorts: function runSorts(event) {
+	    var _this = this;
+
 	    event.preventDefault();
+	    if (this.state.arraySize == 100000 || this.state.arraySize == 1000 && this.state.trialSize == 1000) {
+	      $('#timeWarning').css("visibility", "visible");
+	    }
+	    setTimeout(function () {
+	      var sortTimes = _this.getSortTimes();
 
-	    var sortTimes = this.getSortTimes();
+	      var max = Math.max.apply(Math, _toConsumableArray(sortTimes));
+	      var percentages = _this.getPercentages(sortTimes, max);
 
-	    var max = Math.max.apply(Math, _toConsumableArray(sortTimes));
-	    var percentages = this.getPercentages(sortTimes, max);
+	      _this.changePercentMarkers(max);
+	      $('#mergeSort').css("height", percentages[0] + "%");
+	      $('#insertionSort').css("height", percentages[1] + "%");
+	      $('#heapSort').css("height", percentages[2] + "%");
+	      $('#selectionSort').css("height", percentages[3] + "%");
+	      $('#quickSort').css("height", percentages[4] + "%");
+	      $('#bubbleSort').css("height", percentages[5] + "%");
 
-	    this.changePercentMarkers(max);
-	    $('#mergeSort').css("height", percentages[0] + "%");
-	    $('#insertionSort').css("height", percentages[1] + "%");
-	    $('#heapSort').css("height", percentages[2] + "%");
-	    $('#selectionSort').css("height", percentages[3] + "%");
-	    $('#quickSort').css("height", percentages[4] + "%");
-	    $('#bubbleSort').css("height", percentages[5] + "%");
+	      $('#mergeSort').css("bottom", "0");
+	      $('#insertionSort').css("bottom", "0");
+	      $('#heapSort').css("bottom", "0");
+	      $('#selectionSort').css("bottom", "0");
+	      $('#quickSort').css("bottom", "0");
+	      $('#bubbleSort').css("bottom", "0");
+	      $('#timeWarning').css("visibility", "hidden");
+	    }, 50);
+	    // $('#timeWarning').on("change", () => {
+	    // let sortTimes = this.getSortTimes();
+	    //
+	    // let max = Math.max(...sortTimes);
+	    // let percentages = this.getPercentages(sortTimes, max);
+	    //
+	    // this.changePercentMarkers(max);
+	    // $('#mergeSort').css("height", `${percentages[0]}%`);
+	    // $('#insertionSort').css("height", `${percentages[1]}%`);
+	    // $('#heapSort').css("height", `${percentages[2]}%`);
+	    // $('#selectionSort').css("height", `${percentages[3]}%`);
+	    // $('#quickSort').css("height", `${percentages[4]}%`);
+	    // $('#bubbleSort').css("height", `${percentages[5]}%`);
+	    //
+	    // $('#mergeSort').css("bottom", "0");
+	    // $('#insertionSort').css("bottom", "0");
+	    // $('#heapSort').css("bottom", "0");
+	    // $('#selectionSort').css("bottom", "0");
+	    // $('#quickSort').css("bottom", "0");
+	    // $('#bubbleSort').css("bottom", "0");
 
-	    $('#mergeSort').css("bottom", "0");
-	    $('#insertionSort').css("bottom", "0");
-	    $('#heapSort').css("bottom", "0");
-	    $('#selectionSort').css("bottom", "0");
-	    $('#quickSort').css("bottom", "0");
-	    $('#bubbleSort').css("bottom", "0");
 	  },
 
 	  getSortTimes: function getSortTimes() {
@@ -21217,16 +21246,18 @@
 	  },
 
 	  onSizeChange: function onSizeChange(event) {
-	    this.setState({ arraySize: event.target.value });
+	    if (event.target.value == 100000) {
+	      this.setState({ arraySize: event.target.value, trialSize: 1 });
+	    } else {
+	      this.setState({ arraySize: event.target.value });
+	    }
 	  },
 
 	  onTrialChange: function onTrialChange(event) {
-	    console.log(event.target.value);
 	    this.setState({ trialSize: event.target.value });
 	  },
 
 	  onSituationChange: function onSituationChange(event) {
-	    console.log(event.target.value);
 	    this.setState({ situation: event.target.value });
 	  },
 
@@ -21255,45 +21286,69 @@
 	      React.createElement(
 	        "label",
 	        { htmlFor: "size3" },
-	        "1000"
+	        "1,000"
 	      ),
 	      React.createElement("input", { id: "size4", type: "radio", checked: this.state.arraySize == 100000, name: "arraySize", onChange: this.onSizeChange, value: 100000 }),
 	      React.createElement(
 	        "label",
 	        { htmlFor: "size4" },
-	        "100000"
+	        "100,000"
 	      )
 	    );
 	  },
 
 	  trialButtons: function trialButtons() {
-	    return React.createElement(
-	      "div",
-	      { className: "trialButtons" },
-	      React.createElement(
-	        "h4",
-	        null,
-	        "Trial Size"
-	      ),
-	      React.createElement("input", { id: "trial1", type: "radio", checked: this.state.trialSize == 10, name: "trialSize", onChange: this.onTrialChange, value: 10 }),
-	      React.createElement(
-	        "label",
-	        { htmlFor: "trial1" },
-	        "10"
-	      ),
-	      React.createElement("input", { id: "trial2", type: "radio", checked: this.state.trialSize == 100, name: "trialSize", onChange: this.onTrialChange, value: 100 }),
-	      React.createElement(
-	        "label",
-	        { htmlFor: "trial2" },
-	        "100"
-	      ),
-	      React.createElement("input", { id: "trial3", type: "radio", checked: this.state.trialSize == 1000, name: "trialSize", onChange: this.onTrialChange, value: 1000 }),
-	      React.createElement(
-	        "label",
-	        { htmlFor: "trial3" },
-	        "1000"
-	      )
-	    );
+	    if (this.state.arraySize == 100000) {
+	      return React.createElement(
+	        "div",
+	        { className: "trialButtons" },
+	        React.createElement(
+	          "h4",
+	          null,
+	          "Trial Size"
+	        ),
+	        React.createElement("input", { id: "trial1", type: "radio", checked: this.state.trialSize == 1, name: "trialSize", onChange: this.onTrialChange, value: 1 }),
+	        React.createElement(
+	          "label",
+	          { htmlFor: "trial1" },
+	          "1"
+	        )
+	      );
+	    } else {
+	      return React.createElement(
+	        "div",
+	        { className: "trialButtons" },
+	        React.createElement(
+	          "h4",
+	          null,
+	          "Trial Size"
+	        ),
+	        React.createElement("input", { id: "trial1", type: "radio", checked: this.state.trialSize == 1, name: "trialSize", onChange: this.onTrialChange, value: 1 }),
+	        React.createElement(
+	          "label",
+	          { htmlFor: "trial1" },
+	          "1"
+	        ),
+	        React.createElement("input", { id: "trial2", type: "radio", checked: this.state.trialSize == 10, name: "trialSize", onChange: this.onTrialChange, value: 10 }),
+	        React.createElement(
+	          "label",
+	          { htmlFor: "trial2" },
+	          "10"
+	        ),
+	        React.createElement("input", { id: "trial3", type: "radio", checked: this.state.trialSize == 100, name: "trialSize", onChange: this.onTrialChange, value: 100 }),
+	        React.createElement(
+	          "label",
+	          { htmlFor: "trial3" },
+	          "100"
+	        ),
+	        React.createElement("input", { id: "trial4", type: "radio", checked: this.state.trialSize == 1000, name: "trialSize", onChange: this.onTrialChange, value: 1000 }),
+	        React.createElement(
+	          "label",
+	          { htmlFor: "trial4" },
+	          "1,000"
+	        )
+	      );
+	    }
 	  },
 
 	  caseButtons: function caseButtons() {
@@ -21336,183 +21391,205 @@
 	    );
 	  },
 
+	  header: function header() {
+	    return React.createElement(
+	      "div",
+	      { id: "header" },
+	      React.createElement(
+	        "a",
+	        { href: "/", id: "logo" },
+	        "Sort Comparison"
+	      )
+	    );
+	  },
+
 	  render: function render() {
 	    return React.createElement(
 	      "div",
-	      null,
+	      { className: "allContent" },
+	      this.header(),
 	      React.createElement(
-	        "ul",
-	        { className: "graph-container" },
+	        "div",
+	        { className: "mainContent" },
+	        this.options(),
 	        React.createElement(
-	          "li",
-	          null,
+	          "ul",
+	          { className: "graph-container" },
 	          React.createElement(
-	            "span",
+	            "li",
 	            null,
-	            "Merge Sort"
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "bar-wrapper" },
 	            React.createElement(
-	              "div",
-	              { className: "bar-container" },
-	              React.createElement("div", { className: "bar-background" }),
-	              React.createElement("div", { id: "mergeSort", className: "bar-inner" }),
-	              React.createElement("div", { className: "bar-foreground" })
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          React.createElement(
-	            "span",
-	            null,
-	            "Insertion sort"
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "bar-wrapper" },
-	            React.createElement(
-	              "div",
-	              { className: "bar-container" },
-	              React.createElement("div", { className: "bar-background" }),
-	              React.createElement("div", { id: "insertionSort", className: "bar-inner" }),
-	              React.createElement("div", { className: "bar-foreground" })
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          React.createElement(
-	            "span",
-	            null,
-	            "Heap sort"
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "bar-wrapper" },
-	            React.createElement(
-	              "div",
-	              { className: "bar-container" },
-	              React.createElement("div", { className: "bar-background" }),
-	              React.createElement("div", { id: "heapSort", className: "bar-inner" }),
-	              React.createElement("div", { className: "bar-foreground" })
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          React.createElement(
-	            "span",
-	            null,
-	            "Selection sort"
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "bar-wrapper" },
-	            React.createElement(
-	              "div",
-	              { className: "bar-container" },
-	              React.createElement("div", { className: "bar-background" }),
-	              React.createElement("div", { id: "selectionSort", className: "bar-inner" }),
-	              React.createElement("div", { className: "bar-foreground" })
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          React.createElement(
-	            "span",
-	            null,
-	            "Quick sort"
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "bar-wrapper" },
-	            React.createElement(
-	              "div",
-	              { className: "bar-container" },
-	              React.createElement("div", { className: "bar-background" }),
-	              React.createElement("div", { id: "quickSort", className: "bar-inner" }),
-	              React.createElement("div", { className: "bar-foreground" })
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          React.createElement(
-	            "span",
-	            null,
-	            "Bubble sort"
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "bar-wrapper" },
-	            React.createElement(
-	              "div",
-	              { className: "bar-container" },
-	              React.createElement("div", { className: "bar-background" }),
-	              React.createElement("div", { id: "bubbleSort", className: "bar-inner" }),
-	              React.createElement("div", { className: "bar-foreground" })
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          React.createElement(
-	            "ul",
-	            { className: "graph-marker-container" },
-	            React.createElement(
-	              "li",
-	              { id: "marker25" },
-	              React.createElement(
-	                "span",
-	                null,
-	                "25%"
-	              )
+	              "span",
+	              null,
+	              "Merge Sort"
 	            ),
 	            React.createElement(
-	              "li",
-	              { id: "marker50" },
+	              "div",
+	              { className: "bar-wrapper" },
 	              React.createElement(
-	                "span",
-	                null,
-	                "50%"
+	                "div",
+	                { className: "bar-container" },
+	                React.createElement("div", { className: "bar-background" }),
+	                React.createElement("div", { id: "mergeSort", className: "bar-inner" }),
+	                React.createElement("div", { className: "bar-foreground" })
 	              )
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            null,
+	            React.createElement(
+	              "span",
+	              null,
+	              "Insertion sort"
 	            ),
 	            React.createElement(
-	              "li",
-	              { id: "marker75" },
+	              "div",
+	              { className: "bar-wrapper" },
 	              React.createElement(
-	                "span",
-	                null,
-	                "75%"
+	                "div",
+	                { className: "bar-container" },
+	                React.createElement("div", { className: "bar-background" }),
+	                React.createElement("div", { id: "insertionSort", className: "bar-inner" }),
+	                React.createElement("div", { className: "bar-foreground" })
 	              )
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            null,
+	            React.createElement(
+	              "span",
+	              null,
+	              "Heap sort"
 	            ),
 	            React.createElement(
-	              "li",
-	              { id: "marker100" },
+	              "div",
+	              { className: "bar-wrapper" },
 	              React.createElement(
-	                "span",
-	                null,
-	                "100%"
+	                "div",
+	                { className: "bar-container" },
+	                React.createElement("div", { className: "bar-background" }),
+	                React.createElement("div", { id: "heapSort", className: "bar-inner" }),
+	                React.createElement("div", { className: "bar-foreground" })
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            null,
+	            React.createElement(
+	              "span",
+	              null,
+	              "Selection sort"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "bar-wrapper" },
+	              React.createElement(
+	                "div",
+	                { className: "bar-container" },
+	                React.createElement("div", { className: "bar-background" }),
+	                React.createElement("div", { id: "selectionSort", className: "bar-inner" }),
+	                React.createElement("div", { className: "bar-foreground" })
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            null,
+	            React.createElement(
+	              "span",
+	              null,
+	              "Quick sort"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "bar-wrapper" },
+	              React.createElement(
+	                "div",
+	                { className: "bar-container" },
+	                React.createElement("div", { className: "bar-background" }),
+	                React.createElement("div", { id: "quickSort", className: "bar-inner" }),
+	                React.createElement("div", { className: "bar-foreground" })
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            null,
+	            React.createElement(
+	              "span",
+	              null,
+	              "Bubble sort"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "bar-wrapper" },
+	              React.createElement(
+	                "div",
+	                { className: "bar-container" },
+	                React.createElement("div", { className: "bar-background" }),
+	                React.createElement("div", { id: "bubbleSort", className: "bar-inner" }),
+	                React.createElement("div", { className: "bar-foreground" })
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            null,
+	            React.createElement(
+	              "ul",
+	              { className: "graph-marker-container" },
+	              React.createElement(
+	                "li",
+	                { id: "marker25" },
+	                React.createElement(
+	                  "span",
+	                  null,
+	                  "ms"
+	                )
+	              ),
+	              React.createElement(
+	                "li",
+	                { id: "marker50" },
+	                React.createElement(
+	                  "span",
+	                  null,
+	                  "ms"
+	                )
+	              ),
+	              React.createElement(
+	                "li",
+	                { id: "marker75" },
+	                React.createElement(
+	                  "span",
+	                  null,
+	                  "ms"
+	                )
+	              ),
+	              React.createElement(
+	                "li",
+	                { id: "marker100" },
+	                React.createElement(
+	                  "span",
+	                  null,
+	                  "ms"
+	                )
 	              )
 	            )
 	          )
 	        )
 	      ),
-	      this.options(),
 	      React.createElement(
 	        "button",
 	        { onClick: this.runSorts },
 	        "Run Sorts"
+	      ),
+	      React.createElement(
+	        "h4",
+	        { id: "timeWarning" },
+	        "This may take a moment"
 	      )
 	    );
 	  }
@@ -21536,7 +21613,7 @@
 	      sortedArray.push(i);
 	    }
 	    for (var _i = 0; _i < trialSize; _i++) {
-	      if (_i == 0) {
+	      if (_i == 0 && trialSize !== 1) {
 	        var start = performance.now();
 	        var sorted = this.mergeSort(sortedArray);
 	        var end = performance.now();
@@ -21620,7 +21697,7 @@
 	      sortedArray.push(i);
 	    }
 	    for (var _i = 0; _i < trialSize; _i++) {
-	      if (_i == 0) {
+	      if (_i == 0 && trialSize !== 1) {
 	        var start = performance.now();
 	        var sorted = this.insertionSort(sortedArray);
 	        var end = performance.now();
@@ -21695,7 +21772,7 @@
 	      sortedArray.push(i);
 	    }
 	    for (var _i = 0; _i < trialSize; _i++) {
-	      if (_i == 0) {
+	      if (_i == 0 && trialSize !== 1) {
 	        var start = performance.now();
 	        var sorted = this.heapSort(sortedArray);
 	        var end = performance.now();
@@ -21795,8 +21872,9 @@
 	    for (var i = 1; i <= array.length; i++) {
 	      sortedArray.push(i);
 	    }
-	    for (var _i = 0; _i < trialSize - 1; _i++) {
-	      if (_i == 0) {
+
+	    for (var _i = 0; _i < trialSize; _i++) {
+	      if (_i == 0 && trialSize !== 1) {
 	        var start = performance.now();
 	        var sorted = this.selectionSort(sortedArray);
 	        var end = performance.now();
@@ -21828,6 +21906,7 @@
 	  average: function average(array) {
 	    var total = 0;
 	    array.forEach(function (num) {
+
 	      total += num;
 	    });
 	    return total / array.length;
@@ -21884,7 +21963,7 @@
 	      sortedArray.push(i);
 	    }
 	    for (var _i = 0; _i < trialSize; _i++) {
-	      if (_i == 0) {
+	      if (_i == 0 && trialSize !== 1) {
 	        var start = performance.now();
 	        var sorted = this.quickSort(sortedArray);
 	        var end = performance.now();
@@ -21996,7 +22075,7 @@
 	      sortedArray.push(i);
 	    }
 	    for (var _i = 0; _i < trialSize; _i++) {
-	      if (_i == 0) {
+	      if (_i == 0 && trialSize !== 1) {
 	        var start = performance.now();
 	        var sorted = this.bubbleSort(sortedArray);
 	        var end = performance.now();
