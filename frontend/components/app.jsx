@@ -8,10 +8,11 @@ const BubbleSort = require("../algorithms/bubble_sort");
 
 const App = React.createClass({
   getInitialState: function(){
-    return {arraySize: 10, trialSize: 10, situation: "average"}
+    return {arraySize: 10, trialSize: 1, situation: "best"}
   },
 
   componentDidMount: function(){
+    $('#timeWarning').css("visibility", "hidden");
     this.reverse = true;
     this.n10 = this.createArray(10);
     this.n100 = this.createArray(100);
@@ -41,26 +42,54 @@ const App = React.createClass({
 
   runSorts: function(event){
     event.preventDefault();
+    if (this.state.arraySize == 100000 || (this.state.arraySize == 1000 && this.state.trialSize == 1000)){
+      $('#timeWarning').css("visibility", "visible");
+    }
+    setTimeout(() => {
+      let sortTimes = this.getSortTimes();
 
-    let sortTimes = this.getSortTimes();
+      let max = Math.max(...sortTimes);
+      let percentages = this.getPercentages(sortTimes, max);
 
-    let max = Math.max(...sortTimes);
-    let percentages = this.getPercentages(sortTimes, max);
+      this.changePercentMarkers(max);
+      $('#mergeSort').css("height", `${percentages[0]}%`);
+      $('#insertionSort').css("height", `${percentages[1]}%`);
+      $('#heapSort').css("height", `${percentages[2]}%`);
+      $('#selectionSort').css("height", `${percentages[3]}%`);
+      $('#quickSort').css("height", `${percentages[4]}%`);
+      $('#bubbleSort').css("height", `${percentages[5]}%`);
 
-    this.changePercentMarkers(max);
-    $('#mergeSort').css("height", `${percentages[0]}%`);
-    $('#insertionSort').css("height", `${percentages[1]}%`);
-    $('#heapSort').css("height", `${percentages[2]}%`);
-    $('#selectionSort').css("height", `${percentages[3]}%`);
-    $('#quickSort').css("height", `${percentages[4]}%`);
-    $('#bubbleSort').css("height", `${percentages[5]}%`);
+      $('#mergeSort').css("bottom", "0");
+      $('#insertionSort').css("bottom", "0");
+      $('#heapSort').css("bottom", "0");
+      $('#selectionSort').css("bottom", "0");
+      $('#quickSort').css("bottom", "0");
+      $('#bubbleSort').css("bottom", "0");
+      $('#timeWarning').css("visibility", "hidden");
+    } , 50);
+    // $('#timeWarning').on("change", () => {
+      // let sortTimes = this.getSortTimes();
+      //
+      // let max = Math.max(...sortTimes);
+      // let percentages = this.getPercentages(sortTimes, max);
+      //
+      // this.changePercentMarkers(max);
+      // $('#mergeSort').css("height", `${percentages[0]}%`);
+      // $('#insertionSort').css("height", `${percentages[1]}%`);
+      // $('#heapSort').css("height", `${percentages[2]}%`);
+      // $('#selectionSort').css("height", `${percentages[3]}%`);
+      // $('#quickSort').css("height", `${percentages[4]}%`);
+      // $('#bubbleSort').css("height", `${percentages[5]}%`);
+      //
+      // $('#mergeSort').css("bottom", "0");
+      // $('#insertionSort').css("bottom", "0");
+      // $('#heapSort').css("bottom", "0");
+      // $('#selectionSort').css("bottom", "0");
+      // $('#quickSort').css("bottom", "0");
+      // $('#bubbleSort').css("bottom", "0");
 
-    $('#mergeSort').css("bottom", "0");
-    $('#insertionSort').css("bottom", "0");
-    $('#heapSort').css("bottom", "0");
-    $('#selectionSort').css("bottom", "0");
-    $('#quickSort').css("bottom", "0");
-    $('#bubbleSort').css("bottom", "0");
+
+
   },
 
   getSortTimes: function(){
@@ -126,16 +155,19 @@ const App = React.createClass({
   },
 
   onSizeChange: function(event){
-    this.setState({arraySize: event.target.value});
+    if (event.target.value == 100000){
+      this.setState({arraySize: event.target.value, trialSize: 1});
+    }
+    else {
+      this.setState({arraySize: event.target.value});
+    }
   },
 
   onTrialChange: function(event){
-    console.log(event.target.value);
     this.setState({trialSize: event.target.value});
   },
 
   onSituationChange: function(event){
-    console.log(event.target.value);
     this.setState({situation: event.target.value});
   },
 
@@ -150,28 +182,42 @@ const App = React.createClass({
         <label htmlFor="size2">100</label>
 
         <input id="size3" type='radio' checked={this.state.arraySize == 1000} name='arraySize' onChange={this.onSizeChange} value={1000}/>
-        <label htmlFor="size3">1000</label>
+        <label htmlFor="size3">1,000</label>
 
         <input id="size4" type='radio' checked={this.state.arraySize == 100000} name='arraySize' onChange={this.onSizeChange} value={100000}/>
-        <label htmlFor="size4">100000</label>
+        <label htmlFor="size4">100,000</label>
       </div>
     )
   },
 
   trialButtons: function(){
-    return (
-      <div className="trialButtons">
-        <h4>Trial Size</h4>
-        <input id="trial1" type='radio' checked={this.state.trialSize == 10} name='trialSize' onChange={this.onTrialChange} value={10} />
-        <label htmlFor="trial1">10</label>
+    if (this.state.arraySize == 100000){
+      return (
+        <div className="trialButtons">
+          <h4>Trial Size</h4>
+          <input id="trial1" type='radio' checked={this.state.trialSize == 1} name='trialSize' onChange={this.onTrialChange} value={1} />
+          <label htmlFor="trial1">1</label>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="trialButtons">
+          <h4>Trial Size</h4>
+          <input id="trial1" type='radio' checked={this.state.trialSize == 1} name='trialSize' onChange={this.onTrialChange} value={1} />
+          <label htmlFor="trial1">1</label>
 
-        <input id="trial2" type='radio' checked={this.state.trialSize == 100} name='trialSize' onChange={this.onTrialChange} value={100} />
-        <label htmlFor="trial2">100</label>
+          <input id="trial2" type='radio' checked={this.state.trialSize == 10} name='trialSize' onChange={this.onTrialChange} value={10} />
+          <label htmlFor="trial2">10</label>
 
-        <input id="trial3" type='radio' checked={this.state.trialSize == 1000} name='trialSize' onChange={this.onTrialChange} value={1000}/>
-        <label htmlFor="trial3">1000</label>
-      </div>
-    )
+          <input id="trial3" type='radio' checked={this.state.trialSize == 100} name='trialSize' onChange={this.onTrialChange} value={100}/>
+          <label htmlFor="trial3">100</label>
+
+          <input id="trial4" type='radio' checked={this.state.trialSize == 1000} name='trialSize' onChange={this.onTrialChange} value={1000}/>
+          <label htmlFor="trial4">1,000</label>
+        </div>
+      )
+    }
   },
 
 
@@ -201,82 +247,94 @@ const App = React.createClass({
     )
   },
 
+  header: function(){
+    return (
+      <div id="header">
+        <a href="/" id="logo">Sort Comparison</a>
+      </div>
+    )
+  },
+
 
   render: function(){
     return (
-      <div>
-        <ul className="graph-container">
-          <li>
-            <span>Merge Sort</span>
-            <div className="bar-wrapper">
-              <div className="bar-container">
-                <div className="bar-background"></div>
-                <div id="mergeSort" className="bar-inner"></div>
-                <div className="bar-foreground"></div>
+      <div className="allContent">
+        {this.header()}
+        <div className="mainContent">
+          {this.options()}
+          <ul className="graph-container">
+            <li>
+              <span>Merge Sort</span>
+              <div className="bar-wrapper">
+                <div className="bar-container">
+                  <div className="bar-background"></div>
+                  <div id="mergeSort" className="bar-inner"></div>
+                  <div className="bar-foreground"></div>
+                </div>
               </div>
-            </div>
-          </li>
-          <li>
-            <span>Insertion sort</span>
-            <div className="bar-wrapper">
-              <div className="bar-container">
-                <div className="bar-background"></div>
-                <div id="insertionSort" className="bar-inner"></div>
-                <div className="bar-foreground"></div>
+            </li>
+            <li>
+              <span>Insertion sort</span>
+              <div className="bar-wrapper">
+                <div className="bar-container">
+                  <div className="bar-background"></div>
+                  <div id="insertionSort" className="bar-inner"></div>
+                  <div className="bar-foreground"></div>
+                </div>
               </div>
-            </div>
-          </li>
-          <li>
-            <span>Heap sort</span>
-            <div className="bar-wrapper">
-              <div className="bar-container">
-                <div className="bar-background"></div>
-                <div id="heapSort" className="bar-inner"></div>
-                <div className="bar-foreground"></div>
+            </li>
+            <li>
+              <span>Heap sort</span>
+              <div className="bar-wrapper">
+                <div className="bar-container">
+                  <div className="bar-background"></div>
+                  <div id="heapSort" className="bar-inner"></div>
+                  <div className="bar-foreground"></div>
+                </div>
               </div>
-            </div>
-          </li>
-          <li>
-            <span>Selection sort</span>
-            <div className="bar-wrapper">
-              <div className="bar-container">
-                <div className="bar-background"></div>
-                <div id="selectionSort" className="bar-inner"></div>
-                <div className="bar-foreground"></div>
+            </li>
+            <li>
+              <span>Selection sort</span>
+              <div className="bar-wrapper">
+                <div className="bar-container">
+                  <div className="bar-background"></div>
+                  <div id="selectionSort" className="bar-inner"></div>
+                  <div className="bar-foreground"></div>
+                </div>
               </div>
-            </div>
-          </li>
-          <li>
-            <span>Quick sort</span>
-            <div className="bar-wrapper">
-              <div className="bar-container">
-                <div className="bar-background"></div>
-                <div id="quickSort" className="bar-inner"></div>
-                <div className="bar-foreground"></div>
+            </li>
+            <li>
+              <span>Quick sort</span>
+              <div className="bar-wrapper">
+                <div className="bar-container">
+                  <div className="bar-background"></div>
+                  <div id="quickSort" className="bar-inner"></div>
+                  <div className="bar-foreground"></div>
+                </div>
               </div>
-            </div>
-          </li>
-          <li>
-            <span>Bubble sort</span>
-            <div className="bar-wrapper">
-              <div className="bar-container">
-                <div className="bar-background"></div>
-                <div id="bubbleSort" className="bar-inner"></div>
-                <div className="bar-foreground"></div>
+            </li>
+            <li>
+              <span>Bubble sort</span>
+              <div className="bar-wrapper">
+                <div className="bar-container">
+                  <div className="bar-background"></div>
+                  <div id="bubbleSort" className="bar-inner"></div>
+                  <div className="bar-foreground"></div>
+                </div>
               </div>
-            </div>
-          </li>
-          <li>
-            <ul className="graph-marker-container">
-              <li id="marker25"><span>25%</span></li>
-              <li id="marker50"><span>50%</span></li>
-              <li id="marker75"><span>75%</span></li>
-              <li id="marker100"><span>100%</span></li>
-            </ul>
-          </li>
-        </ul>
-        {this.options()}
+            </li>
+            <li>
+              <ul className="graph-marker-container">
+                <li id="marker25"><span>ms</span></li>
+                <li id="marker50"><span>ms</span></li>
+                <li id="marker75"><span>ms</span></li>
+                <li id="marker100"><span>ms</span></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
         <button onClick={this.runSorts}>Run Sorts</button>
+        <h4 id="timeWarning">This may take a moment</h4>
       </div>
     )
   }

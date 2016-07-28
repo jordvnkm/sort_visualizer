@@ -9,7 +9,7 @@ const BubbleSort = {
       sortedArray.push(i);
     }
     for (let i = 0 ; i < trialSize; i ++){
-      if (i == 0){
+      if (i == 0 && trialSize !== 1){
         let start = performance.now();
         let sorted = this.bubbleSort(sortedArray);
         let end = performance.now();

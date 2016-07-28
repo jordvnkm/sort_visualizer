@@ -10,8 +10,9 @@ const SelectionSort = {
     for (let i = 1; i <= array.length ; i ++){
       sortedArray.push(i);
     }
-    for (let i = 0 ; i < trialSize - 1; i ++){
-      if (i == 0){
+
+    for (let i = 0 ; i < trialSize; i ++){
+      if (i == 0 && trialSize !== 1){
         let start = performance.now();
         let sorted = this.selectionSort(sortedArray);
         let end = performance.now();
@@ -46,6 +47,7 @@ const SelectionSort = {
   average: function(array){
     let total = 0;
     array.forEach((num) => {
+
       total += num;
     })
     return (total / array.length);
