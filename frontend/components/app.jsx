@@ -12,7 +12,15 @@ const App = React.createClass({
   },
 
   componentDidMount: function(){
-    $('#timeWarning').css("visibility", "hidden");
+    $('#timeWarning').css('visibility', 'hidden');
+    $('#loader').hide();
+    let self = this;
+    $(document).ready(function(){
+        $('#runSorts').click(function() {
+            self.runSorts();
+
+        });
+    });
     this.reverse = true;
     this.n10 = this.createArray(10);
     this.n100 = this.createArray(100);
@@ -41,9 +49,10 @@ const App = React.createClass({
   },
 
   runSorts: function(event){
-    event.preventDefault();
+    // event.preventDefault();
     if (this.state.arraySize == 100000 || (this.state.arraySize == 1000 && this.state.trialSize == 1000)){
-      $('#timeWarning').css("visibility", "visible");
+      $('#timeWarning').css('visibility', 'visible');
+      $('#loader').show();
     }
     setTimeout(() => {
       let sortTimes = this.getSortTimes();
@@ -66,30 +75,8 @@ const App = React.createClass({
       $('#quickSort').css("bottom", "0");
       $('#bubbleSort').css("bottom", "0");
       $('#timeWarning').css("visibility", "hidden");
+      $('#loader').hide();
     } , 50);
-    // $('#timeWarning').on("change", () => {
-      // let sortTimes = this.getSortTimes();
-      //
-      // let max = Math.max(...sortTimes);
-      // let percentages = this.getPercentages(sortTimes, max);
-      //
-      // this.changePercentMarkers(max);
-      // $('#mergeSort').css("height", `${percentages[0]}%`);
-      // $('#insertionSort').css("height", `${percentages[1]}%`);
-      // $('#heapSort').css("height", `${percentages[2]}%`);
-      // $('#selectionSort').css("height", `${percentages[3]}%`);
-      // $('#quickSort').css("height", `${percentages[4]}%`);
-      // $('#bubbleSort').css("height", `${percentages[5]}%`);
-      //
-      // $('#mergeSort').css("bottom", "0");
-      // $('#insertionSort').css("bottom", "0");
-      // $('#heapSort').css("bottom", "0");
-      // $('#selectionSort').css("bottom", "0");
-      // $('#quickSort').css("bottom", "0");
-      // $('#bubbleSort').css("bottom", "0");
-
-
-
   },
 
   getSortTimes: function(){
@@ -240,6 +227,8 @@ const App = React.createClass({
   options: function(){
     return (
       <div className="options">
+        <h3>Choose array size, and trial size</h3>
+        <p>Sort comparison will run sorts and display best/worst/average sorting time</p>
         {this.sizeButtons()}
         {this.trialButtons()}
         {this.caseButtons()}
@@ -333,7 +322,9 @@ const App = React.createClass({
             </li>
           </ul>
         </div>
-        <button onClick={this.runSorts}>Run Sorts</button>
+        <div id="loader">
+        </div>
+        <button id="runSorts" >Run Sorts</button>
         <h4 id="timeWarning">This may take a moment</h4>
       </div>
     )

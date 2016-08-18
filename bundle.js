@@ -21111,7 +21111,14 @@
 	  },
 
 	  componentDidMount: function componentDidMount() {
-	    $('#timeWarning').css("visibility", "hidden");
+	    $('#timeWarning').css('visibility', 'hidden');
+	    $('#loader').hide();
+	    var self = this;
+	    $(document).ready(function () {
+	      $('#runSorts').click(function () {
+	        self.runSorts();
+	      });
+	    });
 	    this.reverse = true;
 	    this.n10 = this.createArray(10);
 	    this.n100 = this.createArray(100);
@@ -21141,9 +21148,10 @@
 	  runSorts: function runSorts(event) {
 	    var _this = this;
 
-	    event.preventDefault();
+	    // event.preventDefault();
 	    if (this.state.arraySize == 100000 || this.state.arraySize == 1000 && this.state.trialSize == 1000) {
-	      $('#timeWarning').css("visibility", "visible");
+	      $('#timeWarning').css('visibility', 'visible');
+	      $('#loader').show();
 	    }
 	    setTimeout(function () {
 	      var sortTimes = _this.getSortTimes();
@@ -21166,28 +21174,8 @@
 	      $('#quickSort').css("bottom", "0");
 	      $('#bubbleSort').css("bottom", "0");
 	      $('#timeWarning').css("visibility", "hidden");
+	      $('#loader').hide();
 	    }, 50);
-	    // $('#timeWarning').on("change", () => {
-	    // let sortTimes = this.getSortTimes();
-	    //
-	    // let max = Math.max(...sortTimes);
-	    // let percentages = this.getPercentages(sortTimes, max);
-	    //
-	    // this.changePercentMarkers(max);
-	    // $('#mergeSort').css("height", `${percentages[0]}%`);
-	    // $('#insertionSort').css("height", `${percentages[1]}%`);
-	    // $('#heapSort').css("height", `${percentages[2]}%`);
-	    // $('#selectionSort').css("height", `${percentages[3]}%`);
-	    // $('#quickSort').css("height", `${percentages[4]}%`);
-	    // $('#bubbleSort').css("height", `${percentages[5]}%`);
-	    //
-	    // $('#mergeSort').css("bottom", "0");
-	    // $('#insertionSort').css("bottom", "0");
-	    // $('#heapSort').css("bottom", "0");
-	    // $('#selectionSort').css("bottom", "0");
-	    // $('#quickSort').css("bottom", "0");
-	    // $('#bubbleSort').css("bottom", "0");
-
 	  },
 
 	  getSortTimes: function getSortTimes() {
@@ -21385,6 +21373,16 @@
 	    return React.createElement(
 	      "div",
 	      { className: "options" },
+	      React.createElement(
+	        "h3",
+	        null,
+	        "Choose array size, and trial size"
+	      ),
+	      React.createElement(
+	        "p",
+	        null,
+	        "Sort comparison will run sorts and display best/worst/average sorting time"
+	      ),
 	      this.sizeButtons(),
 	      this.trialButtons(),
 	      this.caseButtons()
@@ -21581,9 +21579,10 @@
 	          )
 	        )
 	      ),
+	      React.createElement("div", { id: "loader" }),
 	      React.createElement(
 	        "button",
-	        { onClick: this.runSorts },
+	        { id: "runSorts" },
 	        "Run Sorts"
 	      ),
 	      React.createElement(

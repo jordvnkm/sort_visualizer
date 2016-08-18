@@ -148,6 +148,7 @@
   background-image: linear-gradient(left , rgba(255, 255, 255, .3) 100%, transparent 100%);
   background-repeat: no-repeat;
   background-position: 0 -2.5em;
+  height: 100%;
 }
 
 
@@ -261,8 +262,8 @@
   position: absolute;
 
   top: 1em;
-  left: -3.5em; /* just to push it away from the graph.. */
-  width: 3.5em; /* give it absolute value of left offset */
+  left: -5.5em; /* just to push it away from the graph.. */
+  width: 5.5em; /* give it absolute value of left offset */
 
   font-size: 1.5em;
 }
