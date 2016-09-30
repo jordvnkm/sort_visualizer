@@ -16,10 +16,10 @@ Bubble Sort
 ## Options
 Users of the application can choose different options for the sorting algorithms.  Different trial sizes can be used to get a more accurate illustration of the sorting times.  Also, different array sizes can be used to the same effect.  Options to display the best, average, and worst times are also given to the user.  The options can be seen below
 
-![options](https://github.com/jordvnkm/fitnessApp/blob/master/docs/options.png)
+![options](https://github.com/jordvnkm/sort_visualizer/blob/master/docs/options.png)
 
 
 ## Display
 Once the user chooses the trial size, array size, and time options, the application displays the sorting times for all the algorithms in a bar graph.  The percentages are based off of the max sorting time out of all the available algorithms.
 
-![display](https://github.com/jordvnkm/fitnessApp/blob/master/docs/display.png)
+![display](https://github.com/jordvnkm/sort_visualizer/blob/master/docs/display.png)
