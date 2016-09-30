@@ -10,7 +10,7 @@ Insertion Sort
 Heap Sort
 Selection Sort
 Quick Sort
-Bubble Sortsor
+Bubble Sort
 ```
 
 ## Options
